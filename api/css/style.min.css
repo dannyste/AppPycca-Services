@@ -1,0 +1,136 @@
+*,
+*:after,
+*:before {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    margin: 0;
+}
+
+html,
+body {
+    font-family: sans-serif;
+    font-size: 13px;
+    height: 100%;
+    background: #EAEAEA;
+}
+
+p {
+    padding: 5px 0px;
+}
+
+strong {
+    /*color: #004996;*/
+}
+
+h4 {
+    margin-bottom: 10px;
+}
+
+.r {
+    color: #F00;
+}
+
+.a_1 {
+    width:100%;
+    padding: 50px;
+}
+
+.b_1 {
+    width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.c_1 {
+    position: relative;
+    background: url("../../img/barra_pycca.jpg") no-repeat center top;
+    padding: 57px 5px 0 5px;
+    width: 100%;
+}
+.c_1 > div {
+    background: #FFF;
+    padding: 15px;
+}
+.c_1 > div > img {
+    position: absolute;
+    width: 150px;
+    top: 13px;
+    left: 50%;
+    margin-left: -75px;
+}
+
+table {
+    width: 100%;
+    max-width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+    margin-bottom: 10px;
+}
+
+table > tbody > tr > td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+}
+
+.center {
+    text-align: center;
+}
+
+.justify {
+    text-align: justify;
+}
+
+select {
+    height: 30px;
+    border: 1px solid #aaa;
+}
+
+input {
+    padding: 5px;
+    height: 30px;
+    width: 100%;
+    border: 1px solid #aaa;
+}
+
+button {
+    padding: 2px 10px 2px 10px;
+    background: #004996;
+    color: #FFF;
+    font-weight: bold;
+    border: 1px solid #759CC6;
+}
+
+.t_1 {
+    width: 50px;
+}
+
+.t_2 {
+    width: 75px;
+}
+
+.t_3 {
+    width: 100px;
+}
+
+.t_4 {
+    width: 125px;
+}
+
+.t_5 {
+    width: 150px;
+}
+
+.error {
+    color: red;
+    padding: 0 10px 10px;
+}
