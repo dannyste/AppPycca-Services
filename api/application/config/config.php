@@ -27,9 +27,9 @@ date_default_timezone_set('America/Guayaquil');
   |
  */
 
-$config['folder_site'] = '/api/';
-$config['base_url'] = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://';
-$config['base_url'] = $config['base_url'] . $_SERVER['HTTP_HOST'];
+//$config['folder_site'] = '/api/';
+$config['base_url'] = '';
+//$config['base_url'] = $config['base_url'] . $_SERVER['HTTP_HOST'];
 
 /*
   |--------------------------------------------------------------------------
@@ -540,7 +540,7 @@ $config['proxy_ips'] = '';
   |
  */
 
-$config['ip_'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+//$config['ip_'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
 
 /*
   |--------------------------------------------------------------------------

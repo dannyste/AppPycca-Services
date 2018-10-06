@@ -76,7 +76,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
     'dsn' => '',
-	'hostname' => 'DESARROLLO-APP',
+	'hostname' => '200.93.198.236',
     'username' => 'usrAPP',
     'password' => 'Intu1t1v@',
     'database' => 'NTS_TARJCRED',
@@ -96,4 +96,3 @@ $db['default'] = array(
     'stricton' => FALSE,
     'failover' => array()
 );
-
