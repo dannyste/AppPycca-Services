@@ -43,4 +43,20 @@ class Client extends REST_Controller {
     $this->response($response);
   }
 
+  public function account_status_get() {
+    $enterprise_id = $this->uri->segment(3);
+    $date = $this->uri->segment(4);
+    $account_number = $this->uri->segment(5);
+    $web_service = $this->uri->segment(6);
+
+    if (!isset($enterprise_id) OR !isset($date) OR !isset($account_number) OR !isset($web_service) ) {
+      $response = response_format(FALSE, 'Número de parámetros incorrecto.');
+      $this->response($response, REST_Controller::HTTP_BAD_REQUEST);
+      return;
+    }
+
+    $response = $this->Client_model->account_status($enterprise_id, $date, $account_number, $web_service);
+    $this->response($response);
+  }
+
 }
