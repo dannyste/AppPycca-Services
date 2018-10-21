@@ -27,7 +27,8 @@ class Content extends REST_Controller {
   }
 
   public function image_get() {
-    $file_name = $this->uri->segment(3);
+    $directory = $this->uri->segment(3);
+    $file_name = $this->uri->segment(4);
 
     if ( !isset($file_name) ) {
       $response = response_format(FALSE, 'Número de parámetros incorrecto.');
@@ -36,7 +37,7 @@ class Content extends REST_Controller {
     }
 
     $this->load->helper('download');
-    $data = file_get_contents('./AppContent/Promotion/' . $file_name);
+    $data = file_get_contents('./AppContent/' . $directory . '/' . $file_name);
     //or perhpas $data = fopen(......);
     force_download($file_name, $data);
   }
