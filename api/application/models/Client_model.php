@@ -185,13 +185,21 @@ class Client_model extends CI_Model {
       $data = array();
       $resultset = 0;
       do {
-        $row = $query->row_array();
         if ($resultset == 0) {
-          $data['result'] = array(
-            'NPlazo'     => (int)$row['NPlazo'],
-            'ValorCuota' => (float)$row['ValorCuota'],
-            'TotalAPagar'=> (float)$row['TotalAPagar']
+          $row = $query->row_array();
+          $data['status_error'] = array(
+            'co_error' => (int)$row['co_error'],
+            'tx_error' => $row['tx_error']
           );
+        }
+        else {
+          foreach($query->result_array() as $row) {
+            $data['result'][] = array(
+              'NPlazo'      => (int)$row['NPlazo'],
+              'ValorCuota'  => (float)$row['ValorCuota'],
+              'TotalAPagar' => (float)$row['TotalAPagar']
+            );
+          }
         }
         $resultset++;
       } while ($query->_next_resultset());

@@ -21,16 +21,26 @@ class Pycca_model extends CI_Model {
       $data = array();
       $resultset = 0;
       do {
-        $row = $query->row_array();
         if ($resultset == 0) {
-          $data = array(
-            'resultado' => $row
+          $row = $query->row_array();
+          $data['status_error'] = array(
+            'co_error' => (int)$row['co_error'],
+            'tx_error' => $row['tx_error']
           );
         }
         else {
-          $data['result'] = array(
-            'ma_cuenta'    => $row
-          );
+          foreach($query->result_array() as $row) {
+            $data['result'][] = array(
+              'ciudad'           => utf8_encode($row['ciudad']),
+              'descripcion'      => utf8_encode($row['descripcion']),
+              'telefono1'        => $row['telefono1'],
+              'telefono2'        => $row['telefono2'],
+              'direccion'        => utf8_encode($row['direccion']),
+              'latitud'          => (float)$row['latitud'],
+              'longitud'         => (float)$row['longitud'],
+              'horario_atencion' => utf8_encode($row['horario_atencion'])
+            );
+          }
         }
         $resultset++;
       } while ($query->_next_resultset());
