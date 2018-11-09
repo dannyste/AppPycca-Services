@@ -10,7 +10,7 @@ class Pycca_model extends CI_Model {
       $this->load->helper('util');
   }
 
-  public function shop() {
+  public function our_shops() {
     try {
       $sql = "EXEC IVDBINVENTAR.dbo._get_direccion_tiendas";
       $query = $this->db->query($sql);

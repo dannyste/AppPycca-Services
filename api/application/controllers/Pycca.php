@@ -13,8 +13,8 @@ class Pycca extends REST_Controller {
       $this->load->helper('util');
   }
 
-  public function shop_get() {
-    $response = $this->Pycca_model->shop();
+  public function our_shops_get() {
+    $response = $this->Pycca_model->our_shops();
     $this->response($response);
   }
 
