@@ -85,9 +85,9 @@ class Client_model extends CI_Model {
     }
   }
 
-  public function balance($document_number, $detail, $save_to_log, $club_pycca_card_number, $since_website) {
+  public function balance($club_pycca_card_number) {
     try {
-      $sql = "EXEC NTS_TARJCRED.dbo.sp_webtcp_ws '$document_number', $detail, $save_to_log, '$club_pycca_card_number', $since_website";
+      $sql = "EXEC NTS_TARJCRED.dbo.sp_webtcp_ws_APP '$club_pycca_card_number'";
       $query = $this->db->query($sql);
       $error_db = $this->db->error();
       if ((int)$error_db['code'] <> 0) {
@@ -98,6 +98,12 @@ class Client_model extends CI_Model {
       do {
         $row = $query->row_array();
         if ($resultset == 0) {
+          $data['status_error'] = array(
+            'co_error' => (int)$row['co_error'],
+            'tx_error' => $row['tx_error']
+          );
+        }
+        else {
           $data['result'] = array(
             'nombre'              => utf8_encode($row['nombre']),
             'cupo'                => (float)$row['cupo'],
@@ -119,14 +125,6 @@ class Client_model extends CI_Model {
             'estado'              => $row['estado'],
             'maestado'            => $row['maestado'],
             'fecha_activacion'    => $row['fecha_activacion']
-          );
-        }
-        else {
-          $data['dataset'] = array(
-            'fecha'       => $row['fecha'],
-            'descripcion' => $row['descripcion'],
-            'total'       => $row['tn_total'],
-            'difnumcuota' => $row['tn_difnumcuota']
           );
         }
         $resultset++;

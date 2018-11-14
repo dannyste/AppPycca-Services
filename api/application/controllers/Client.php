@@ -28,17 +28,13 @@ class Client extends REST_Controller {
   }
 
   public function balance_get() {
-    $document_number = $this->uri->segment(3);
-    $detail = $this->uri->segment(4);
-    $save_to_log = $this->uri->segment(5);
-    $club_pycca_card_number = $this->uri->segment(6);
-    $since_website = $this->uri->segment(7);
-    if (!isset($document_number) OR !isset($detail) OR !isset($save_to_log) OR !isset($club_pycca_card_number) OR !isset($since_website)) {
+    $club_pycca_card_number = $this->uri->segment(3);
+    if (!isset($club_pycca_card_number)) {
       $response = response_format(FALSE, 'Número de parámetros incorrectos.');
       $this->response($response, REST_Controller::HTTP_BAD_REQUEST);
       return;
     }
-    $response = $this->Client_model->balance($document_number, $detail, $save_to_log, $club_pycca_card_number, $since_website);
+    $response = $this->Client_model->balance($club_pycca_card_number);
     $this->response($response);
   }
 
