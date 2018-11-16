@@ -105,26 +105,11 @@ class Client_model extends CI_Model {
         }
         else {
           $data['result'] = array(
-            'nombre'              => utf8_encode($row['nombre']),
             'cupo'                => (float)$row['cupo'],
-            'saldoTotal'          => (float)$row['saldoTotal'],
             'minimo_pagar'        => (float)$row['minimo_pagar'],
             'fechaTopePago'       => $row['fechaTopePago'],
-            'ultimo_pago'         => $row['ultimo_pago'],
-            'saldo_diferido'      => (float)$row['saldo_diferido'],
-            'saldo_rotativo'      => (float)$row['saldo_rotativo'],
-            'dolpycca_disponible' => (float)$row['dolpycca_disponible'],
-            'dolpycca_xvencer'    => (float)$row['dolpycca_xvencer'],
-            'cupo_tarjeta'        => (float)$row['cupo_tarjeta'],
-            'tarjeta_no'          => $row['tarjeta_no'],
-            'identificacion'      => $row['identificacion'],
-            'disponible_cuenta'   => (float)$row['disponible_cuenta'],
-            'disponible_tarjeta'  => (float)$row['disponible_tarjeta'],
-            'deuda_total'         => (float)$row['deuda_total'],
-            'fecha_act'           => $row['fecha_act'],
-            'estado'              => $row['estado'],
-            'maestado'            => $row['maestado'],
-            'fecha_activacion'    => $row['fecha_activacion']
+            'disponible_cuenta'   => (float)$row['disponible_cuenta']
+            //'deuda_total'         => (float)$row['deuda_total'],
           );
         }
         $resultset++;
