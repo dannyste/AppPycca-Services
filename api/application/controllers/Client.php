@@ -76,4 +76,25 @@ class Client extends REST_Controller {
     $this->response($response);
   }
 
+  public function club_pycca_partner_post() {
+    $name = $this->post('name');
+    $last_name = $this->post('last_name');
+    $born_date = $this->post('born_date');
+    $identification = $this->post('identification');
+    $email = $this->post('email');
+    $phone = $this->post('phone');
+    $cell_phone = $this->post('cell_phone');
+    $address = $this->post('address');
+
+    if ($name == '' OR $last_name == '' OR $born_date == '' OR $identification == '' OR
+        $email == '' OR $phone == '' OR $cell_phone == '' OR $address == '') {
+      $response = response_format(FALSE, 'Número de parámetros incorrectos.');
+      $this->response($response, REST_Controller::HTTP_BAD_REQUEST);
+      return;
+    }
+    $response = $this->Client_model->club_pycca_partner($name, $last_name, $born_date, $identification,
+                                                        $email, $phone, $cell_phone, $address);
+    $this->response($response);
+  }
+
 }

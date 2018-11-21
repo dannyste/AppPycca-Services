@@ -231,4 +231,26 @@ class Client_model extends CI_Model {
     }
   }
 
+  public function club_pycca_partner($name, $last_name, $born_date, $identification,
+                                     $email, $phone, $cell_phone, $address) {
+    try {
+      $sql = "EXEC NTS_TARJCRED.dbo._enviar_solicitud_credito '$name', '$last_name', '$born_date', '$identification', '$email', '$phone', '$cell_phone', '$address'";
+      $query = $this->db->query($sql);
+      $error_db = $this->db->error();
+      if ((int)$error_db['code'] <> 0) {
+        throw new Exception($error_db['message'], $error_db['code']);
+      }
+      $data = array();
+      $row = $query->row_array();
+      $data['status_error'] = array(
+        'co_error' => (int)$row['co_error'],
+        'tx_error' => $row['tx_error']
+      );    
+      $query->free_result();
+      return response_format(TRUE, 'Servicio ejecutado correctamente.', $data);
+    }
+    catch (Exception $e) {
+      return response_format(FALSE, $e->getMessage());
+    }
+  }
 }
