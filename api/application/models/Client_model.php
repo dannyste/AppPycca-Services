@@ -10,82 +10,7 @@ class Client_model extends CI_Model {
       $this->load->helper('util');
   }
 
-  public function account_status($enterprise_id, $date, $account_number, $web_service) {
-    try {
-      $sql = "DECLARE @afinidad VARCHAR(4)
-              EXEC NTS_TARJCRED.dbo.sp_get_afinidad 8813, @afinidad OUTPUT;
-              EXEC NTS_TARJCRED.dbo.sp_tcr1000_ws $enterprise_id, '$date', $account_number, @afinidad, $web_service";
-      $query = $this->db->query($sql);
-      $error_db = $this->db->error();
-      if ((int)$error_db['code'] <> 0) {
-        throw new Exception($error_db['message'], $error_db['code']);
-      }
-      $data = array();
-      $resultset = 0;
-      do {
-        $row = $query->row_array();
-        if ($resultset == 0) {
-          $data['result'] = array(
-            'Cuenta'             => (int)$row['Cuenta'],
-            'MoviMes'            => (int)$row['MoviMes'],
-            'NombreAd'           => utf8_encode($row['NombreAd']),
-            'Nombre'             => utf8_encode($row['Nombre']),
-            'Direccion'          => utf8_encode($row['Direccion']),
-            'Telefono'           => utf8_encode($row['Telefono']),
-            'Ciudad'             => utf8_encode($row['Ciudad']),
-            'Zona'               => $row['Zona'],
-            'FCorte'             => $row['FCorte'],
-            'FPago'              => $row['FPago'],
-            'Cupo'               => (float)$row['Cupo'],
-            'SdoActual'          => (float)$row['SdoActual'],
-            'SdoAnterior'        => (float)$row['SdoAnterior'],
-            'PagoMinimo'         => (float)$row['PagoMinimo'],
-            'PagosVencidos'      => (float)$row['PagosVencidos'],
-            'OtrasTrxs'          => (float)$row['OtrasTrxs'],
-            'Cargos'             => (float)$row['Cargos'],
-            'Pagos'              => (float)$row['Pagos'],
-            'FchTrx'             => $row['FchTrx'],
-            'Referencia'         => $row['Referencia'],
-            'Descripcion'        => utf8_encode($row['Descripcion']),
-            'Valor'              => (float)$row['Valor'],
-            'DifNumCuota'        => $row['DifNumCuota'],
-            'DifCuota'           => (float)$row['DifCuota'],
-            'DifSaldo'           => (float)$row['DifSaldo'],
-            'MsgComercialLinea1' => utf8_encode($row['MsgComercialLinea1']),
-            'MsgComercialLinea2' => utf8_encode($row['MsgComercialLinea2']),
-            'MsgComercialLinea3' => utf8_encode($row['MsgComercialLinea3']),
-            'TarjetaNormal'      => $row['TarjetaNormal'],
-            'OrdenDetalle'       => $row['OrdenDetalle'],
-            'empresa'            => utf8_encode($row['empresa']),
-            'direccionempresa'   => utf8_encode($row['direccionempresa']),
-            'ciudadpais'         => utf8_encode($row['ciudadpais']),
-            'ruc'                => $row['ruc'],
-            'resolucion'         => utf8_encode($row['resolucion']),
-            'autorizacion'       => utf8_encode($row['autorizacion']),
-            'telefonoempresa'    => $row['telefonoempresa'],
-            'iva'                => (float)$row['iva'],
-            'financieros'        => (float)$row['financieros'],
-            'nofinancieros'      => (float)$row['nofinancieros'],
-            'valoriva'           => (float)$row['valoriva'],
-            'valoriva0'          => (float)$row['valoriva0'],
-            'fact'               => $row['fact'],
-            'mp_disponible'      => (float)$row['mp_disponible'],
-            'mp_xvencer'         => (float)$row['mp_xvencer'],
-            'Km_generados'       => (int)$row['Km_generados'],
-            'km_acreditados'     => (int)$row['km_acreditados']
-          );
-        }
-        $resultset++;
-      } while ($query->_next_resultset());
-      $query->free_result();
-      return response_format(TRUE, 'Servicio ejecutado correctamente.', $data);
-    }
-    catch (Exception $e) {
-      return response_format(FALSE, $e->getMessage());
-    }
-  }
-
-  public function balance($club_pycca_card_number) {
+  public function account_status($club_pycca_card_number) {
     try {
       $sql = "EXEC NTS_TARJCRED.dbo.sp_webtcp_ws_APP '$club_pycca_card_number'";
       $query = $this->db->query($sql);
@@ -133,22 +58,10 @@ class Client_model extends CI_Model {
         throw new Exception($error_db['message'], $error_db['code']);
       }
       $data = array();
-      $resultset = 0;
-      do {
-        $row = $query->row_array();
-        if ($resultset == 0) {
-          $data['result'] = array(
-            'ta_tarjeta'      => $row['ta_tarjeta'],
-            'ta_princiadicio' => $row['ta_princiadicio'],
-            'tr_anterior'     => $row['tr_anterior'],
-            'tr_actual'       => $row['tr_actual']
-          );
-        }
-        else {
-          array_push($data['result']['output'], $row['result']);
-        }
-        $resultset++;
-      } while ($query->_next_resultset());
+      $row = $query->row_array();
+      $data['status_error'] = array(
+        'co_error' => '',
+        'tx_error' => '');
       $query->free_result();
       return response_format(TRUE, 'Servicio ejecutado correctamente.', $data);
     }
@@ -245,7 +158,64 @@ class Client_model extends CI_Model {
       $data['status_error'] = array(
         'co_error' => (int)$row['co_error'],
         'tx_error' => $row['tx_error']
-      );    
+      );
+      $query->free_result();
+      return response_format(TRUE, 'Servicio ejecutado correctamente.', $data);
+    }
+    catch (Exception $e) {
+      return response_format(FALSE, $e->getMessage());
+    }
+  }
+
+  public function club_pycca_cards($account_number, $club_pycca_card_number) {
+    try {
+      $sql = "EXEC NTS_TARJCRED.dbo.sp_ttarjetasactivas '$account_number', '$club_pycca_card_number'";
+      $query = $this->db->query($sql);
+      $error_db = $this->db->error();
+      if ((int)$error_db['code'] <> 0) {
+        throw new Exception($error_db['message'], $error_db['code']);
+      }
+      $data = array();
+      $resultset = 0;
+      do {
+        $row = $query->row_array();
+        if ($resultset == 0) {
+          $data['status_error'] = array(
+            'co_error' => (int)$row['co_error'],
+            'tx_error' => $row['tx_error']
+          );
+        }
+        else {
+          $data['result'] = array(
+            'tarjeta'    => (int)$row['tarjeta'],
+            'ta_plnombre1'   => utf8_encode($row['ta_plnombre1']),
+            'ta_princiadicio' => $row['ta_princiadicio']
+          );
+        }
+        $resultset++;
+      } while ($query->_next_resultset());
+      $query->free_result();
+      return response_format(TRUE, 'Servicio ejecutado correctamente.', $data);
+    }
+    catch (Exception $e) {
+      return response_format(FALSE, $e->getMessage());
+    }
+  }
+
+  public function quota_increase($increase_type, $account_number, $identification, $email, $name, $last_name, $quota) {
+    try {
+      $sql = "EXEC NTS_TARJCRED.dbo._enviar_solicitud_aumento_cupo '$increase_type', '$account_number', '$identification', '$email', '$name', '$last_name', '$quota'";
+      $query = $this->db->query($sql);
+      $error_db = $this->db->error();
+      if ((int)$error_db['code'] <> 0) {
+        throw new Exception($error_db['message'], $error_db['code']);
+      }
+      $data = array();
+      $row = $query->row_array();
+      $data['status_error'] = array(
+        'co_error' => (int)$row['co_error'],
+        'tx_error' => utf8_encode($row['tx_error'])
+      );
       $query->free_result();
       return response_format(TRUE, 'Servicio ejecutado correctamente.', $data);
     }
