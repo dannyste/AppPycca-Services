@@ -25,7 +25,7 @@ class Client_model extends CI_Model {
         if ($resultset == 0) {
           $data['status_error'] = array(
             'co_error' => (int)$row['co_error'],
-            'tx_error' => $row['tx_error']
+            'tx_error' => utf8_encode($row['tx_error'])
           );
         }
         else {
@@ -62,7 +62,7 @@ class Client_model extends CI_Model {
         if ($resultset == 0) {
           $data['status_error'] = array(
             'co_error' => (int)$row['co_error'],
-            'tx_error' => $row['tx_error']
+            'tx_error' => utf8_encode($row['tx_error'])
           );
         }
         else {
@@ -71,7 +71,6 @@ class Client_model extends CI_Model {
             'minimo_pagar'        => (float)$row['minimo_pagar'],
             'fechaTopePago'       => $row['fechaTopePago'],
             'disponible_cuenta'   => (float)$row['disponible_cuenta']
-            //'deuda_total'         => (float)$row['deuda_total'],
           );
         }
         $resultset++;
@@ -121,7 +120,7 @@ class Client_model extends CI_Model {
           $row = $query->row_array();
           $data['status_error'] = array(
             'co_error' => (int)$row['co_error'],
-            'tx_error' => $row['tx_error']
+            'tx_error' => utf8_encode($row['tx_error'])
           );
         }
         else {
@@ -158,7 +157,7 @@ class Client_model extends CI_Model {
           $row = $query->row_array();
           $data['status_error'] = array(
             'co_error' => (int)$row['co_error'],
-            'tx_error' => $row['tx_error']
+            'tx_error' => utf8_encode($row['tx_error'])
           );
         }
         else {
@@ -215,7 +214,7 @@ class Client_model extends CI_Model {
       $row = $query->row_array();
       $data['status_error'] = array(
         'co_error' => (int)$row['co_error'],
-        'tx_error' => $row['tx_error']
+        'tx_error' => utf8_encode($row['tx_error'])
       );
       $query->free_result();
       return response_format(TRUE, 'Servicio ejecutado correctamente.', $data);
