@@ -11,6 +11,8 @@ class Client extends REST_Controller {
       parent::__construct();
       $this->load->model('Client_model');
       $this->load->helper('util');
+      $this->load->helper('MY_estado_cuenta');
+      $this->load->model('M_estadoscuenta');
   }
 
   public function validate_client_get() {
@@ -112,6 +114,30 @@ class Client extends REST_Controller {
     $response = $this->Client_model->club_pycca_partner($name, $last_name, $born_date, $identification,
                                                         $email, $phone, $cell_phone, $address);
     $this->response($response);
+  }
+
+  public function pdf_account_status_get() {
+    $account_number = $this->uri->segment(3);
+    $cut_date = $this->uri->segment(4);
+
+    if ( !isset($account_number) OR !isset($cut_date)) {
+      $response = response_format(FALSE, 'Número de parámetros incorrecto.');
+      $this->response($response, REST_Controller::HTTP_BAD_REQUEST);
+      return;
+    }
+    $file_name = '';
+
+    try {
+        $respuesta = generatePDF((int)$account_number, $cut_date);
+        $file_name = $respuesta['archivo'];
+    } catch (Exception $e) {
+    }
+    print_r($respuesta);
+
+    $this->load->helper('download');
+    $data = file_get_contents('./' . $file_name);
+    // //or perhpas $data = fopen(......);
+    force_download($file_name, $data);
   }
 
 }
