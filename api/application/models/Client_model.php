@@ -12,7 +12,7 @@ class Client_model extends CI_Model {
 
   public function validate_client($document_type, $document_number, $club_pycca_card_number) {
     try {
-      $sql = "EXEC IVDBINVENTAR.vtex._validaClienteConsultas '$document_type', '$document_number', '$club_pycca_card_number'";
+      $sql = "EXEC IVDBINVENTAR.vtex._VerificarCliente '$document_type', '$document_number', '$club_pycca_card_number'";
       $query = $this->db->query($sql);
       $error_db = $this->db->error();
       if ((int)$error_db['code'] <> 0) {
@@ -34,7 +34,7 @@ class Client_model extends CI_Model {
             'cl_nombres'   => utf8_encode($row['cl_nombres']),
             'cl_apellidos' => utf8_encode($row['cl_apellidos']),
             'no_estados'   => $row['no_estados'],
-            'ma_fapertura' => $row['ma_fapertura']
+            'fe_apertura' =>  $row['fe_apertura']
           );
         }
         $resultset++;
