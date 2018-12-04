@@ -34,7 +34,7 @@ class Client_model extends CI_Model {
             'cl_nombres'   => utf8_encode($row['cl_nombres']),
             'cl_apellidos' => utf8_encode($row['cl_apellidos']),
             'no_estados'   => $row['no_estados'],
-            'ma_fapertura' => $row['ma_fapertura']
+            'fe_apertura' =>  $row['fe_apertura']
           );
         }
         $resultset++;
