@@ -70,7 +70,9 @@ class Client_model extends CI_Model {
             'cupo'                => (float)$row['cupo'],
             'minimo_pagar'        => (float)$row['minimo_pagar'],
             'fechaTopePago'       => $row['fechaTopePago'],
-            'disponible_cuenta'   => (float)$row['disponible_cuenta']
+            'disponible_cuenta'   => (float)$row['disponible_cuenta'],
+            'vencido'   => (boolean)$row['vencido'],
+            'fechaUltimoCorte'   => (float)$row['fechaUltimoCorte']
           );
         }
         $resultset++;
