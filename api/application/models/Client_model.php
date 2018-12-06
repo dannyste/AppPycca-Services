@@ -181,9 +181,9 @@ class Client_model extends CI_Model {
     }
   }
 
-  public function card_blocking($club_pycca_card_number, $account_number, $reason_code, $reason_description) {
+  public function card_locking($club_pycca_card_number, $account_number, $reason_code, $reason_description, $email) {
     try {
-      $sql = "EXEC NTS_TARJCRED.._bloquea_tarjeta '$club_pycca_card_number', $account_number, '$reason_code', '$reason_description'";
+      $sql = "EXEC NTS_TARJCRED.._bloquea_tarjeta '$club_pycca_card_number', $account_number, '$reason_code', '$reason_description', '$email'";
       $query = $this->db->query($sql);
       $error_db = $this->db->error();
       if ((int)$error_db['code'] <> 0) {
@@ -203,8 +203,7 @@ class Client_model extends CI_Model {
     }
   }
 
-  public function club_pycca_partner($name, $last_name, $born_date, $identification,
-                                     $email, $phone, $cell_phone, $address) {
+  public function club_pycca_partner($name, $last_name, $born_date, $identification, $email, $phone, $cell_phone, $address) {
     try {
       $sql = "EXEC NTS_TARJCRED.dbo._enviar_solicitud_credito '$name', '$last_name', '$born_date', '$identification', '$email', '$phone', '$cell_phone', '$address'";
       $query = $this->db->query($sql);

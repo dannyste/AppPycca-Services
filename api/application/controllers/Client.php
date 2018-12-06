@@ -81,17 +81,18 @@ class Client extends REST_Controller {
     $this->response($response);
   }
 
-  public function card_blocking_post() {
+  public function card_locking_post() {
     $club_pycca_card_number = $this->post('club_pycca_card_number');
     $account_number = $this->post('account_number');
     $reason_code = $this->post('reason_code');
     $reason_description = $this->post('reason_description');
-    if (!isset($club_pycca_card_number) OR !isset($account_number) OR !isset($reason_code) OR !isset($reason_description)) {
+    $email = $this->post('email');
+    if (!isset($club_pycca_card_number) OR !isset($account_number) OR !isset($reason_code) OR !isset($reason_description) OR !isset($email)) {
       $response = response_format(FALSE, 'Número de parámetros incorrectos.');
       $this->response($response, REST_Controller::HTTP_BAD_REQUEST);
       return;
     }
-    $response = $this->Client_model->card_blocking($club_pycca_card_number, $account_number, $reason_code, $reason_description);
+    $response = $this->Client_model->card_locking($club_pycca_card_number, $account_number, $reason_code, $reason_description, $email);
     $this->response($response);
   }
 
@@ -104,39 +105,33 @@ class Client extends REST_Controller {
     $phone = $this->post('phone');
     $cell_phone = $this->post('cell_phone');
     $address = $this->post('address');
-
-    if ($name == '' OR $last_name == '' OR $born_date == '' OR $identification == '' OR
-        $email == '' OR $phone == '' OR $cell_phone == '' OR $address == '') {
+    if ($name == '' OR $last_name == '' OR $born_date == '' OR $identification == '' OR $email == '' OR $phone == '' OR $cell_phone == '' OR $address == '') {
       $response = response_format(FALSE, 'Número de parámetros incorrectos.');
       $this->response($response, REST_Controller::HTTP_BAD_REQUEST);
       return;
     }
-    $response = $this->Client_model->club_pycca_partner($name, $last_name, $born_date, $identification,
-                                                        $email, $phone, $cell_phone, $address);
+    $response = $this->Client_model->club_pycca_partner($name, $last_name, $born_date, $identification, $email, $phone, $cell_phone, $address);
     $this->response($response);
   }
 
   public function pdf_account_status_get() {
     $account_number = $this->uri->segment(3);
     $cut_date = $this->uri->segment(4);
-
     if ( !isset($account_number) OR !isset($cut_date)) {
       $response = response_format(FALSE, 'Número de parámetros incorrecto.');
       $this->response($response, REST_Controller::HTTP_BAD_REQUEST);
       return;
     }
     $file_name = '';
-
     try {
         $respuesta = generatePDF((int)$account_number, $cut_date);
         $file_name = $respuesta['archivo'];
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
     }
     print_r($respuesta);
-
     $this->load->helper('download');
     $data = file_get_contents('./' . $file_name);
-    // //or perhpas $data = fopen(......);
     force_download($file_name, $data);
   }
 
